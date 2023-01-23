@@ -6,12 +6,6 @@ const sequelize = createConnection(true);
 
 class PermisoModel extends Model {
 
-	getDataValues = () => [
-		this.getDataValue("id"),
-		this.getDataValue("codigo"),
-		this.getDataValue("nombre")
-	];
-
 }
 
 PermisoModel.init(PermisoSchema, {

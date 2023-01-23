@@ -6,7 +6,7 @@ const permisoController = container.resolve('permisoController');
 const router = express.Router();
 
 router
-    .get('/permiso', useAuth('ROL_ADMIN'), permisoController.get)
-    .get('/permiso/:id', useAuth('ROL_ADMIN'), permisoController.getById)
+    .get('/permiso', useAuth, permisoController.get)
+    .get('/permiso/:id', useAuth, permisoController.getById)
 
 export default router;

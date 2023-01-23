@@ -6,12 +6,12 @@ const rolController = container.resolve('rolController');
 const router = express.Router();
 
 router
-    .get('/rol', useAuth('ROL_ADMIN'), rolController.get)
-    .get('/rol/:id', useAuth('ROL_ADMIN'), rolController.getById)
-    .post('/rol', useAuth('ROL_ADMIN'), rolController.post)
-    .put('/rol/:id', useAuth('ROL_ADMIN'), rolController.put)
-    .put('/rol/:id/permisos/bind', useAuth('ROL_ADMIN'), rolController.putBindPermisos)
-    .put('/rol/:id/permisos/unbind', useAuth('ROL_ADMIN'), rolController.putUnindPermisos)
-    .delete('/rol/:id', useAuth('ROL_ADMIN'), rolController.delete)
+    .get('/rol', useAuth, rolController.get)
+    .get('/rol/:id', useAuth, rolController.getById)
+    .post('/rol', useAuth, rolController.post)
+    .put('/rol/:id', useAuth, rolController.put)
+    .put('/rol/:id/permisos/bind', useAuth, rolController.putBindPermisos)
+    .put('/rol/:id/permisos/unbind', useAuth, rolController.putUnindPermisos)
+    .delete('/rol/:id', useAuth, rolController.delete)
 
 export default router;

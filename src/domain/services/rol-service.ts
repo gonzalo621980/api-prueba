@@ -1,21 +1,29 @@
 import Rol from '../entities/rol';
 import IRolRepository from '../repositories/rol-repository';
+import PermisoService from './permiso-service';
 import { isValidArray, isValidInteger, isValidString,  } from '../../infraestructure/sdk/utils/validator';
 import ValidationError from '../../infraestructure/sdk/error/validation-error';
 import ProcessError from '../../infraestructure/sdk/error/process-error';
 import ReferenceError from '../../infraestructure/sdk/error/reference-error';
+import BaseService from './base-service';
 
-export default class RolService {
+export default class RolService extends BaseService {
 
 	rolRepository: IRolRepository;
+	permisoService: PermisoService;
 
-	constructor(rolRepository: IRolRepository) {
+	constructor(rolRepository: IRolRepository, permisoService: PermisoService) {
+		super();
 		this.rolRepository = rolRepository;
+		this.permisoService = permisoService;
 	}
 
 	async list() {
 		return new Promise( async (resolve, reject) => {
 			try {
+				//verifico permisos
+				await this.permisoService.checkByCodigo(this.idUsuario, "ROL_ADMIN");
+
 				const result = await this.rolRepository.list();
 				resolve(result);
 			}
@@ -27,7 +35,10 @@ export default class RolService {
 
 	async findById(id: number) {
 		return new Promise( async (resolve, reject) => {
-			try {			   
+			try {
+				//verifico permisos
+				await this.permisoService.checkByCodigo(this.idUsuario, "ROL_ADMIN");
+
 				const result = await this.rolRepository.findById(id);
 				if (!result) {
 					reject(new ReferenceError('No existe el registro'));
@@ -44,6 +55,9 @@ export default class RolService {
 	async add(rol: Rol) {
 		return new Promise( async (resolve, reject) => {
 			try {
+				//verifico permisos
+				await this.permisoService.checkByCodigo(this.idUsuario, "ROL_ADMIN");
+
 				if (
 					!isValidString(rol.codigo, true) ||
 					!isValidString(rol.nombre, true)
@@ -65,6 +79,9 @@ export default class RolService {
 	async modify(id: number, rol: Rol) {
 		return new Promise( async (resolve, reject) => {
 			try {
+				//verifico permisos
+				await this.permisoService.checkByCodigo(this.idUsuario, "ROL_ADMIN");
+
 				if (
 					!isValidString(rol.codigo, true) ||
 					!isValidString(rol.nombre, true)
@@ -89,6 +106,9 @@ export default class RolService {
 	async remove(id: number) {
 		return new Promise( async (resolve, reject) => {
 			try {
+				//verifico permisos
+				await this.permisoService.checkByCodigo(this.idUsuario, "ROL_ADMIN");
+
 				const result = await this.rolRepository.remove(id);
 				if (!result) {
 					reject(new ReferenceError('No existe el registro'));
@@ -106,6 +126,9 @@ export default class RolService {
 	async bindPermisos(id:number, permisos:number[]) {
         return new Promise( async (resolve, reject) => {
             try {
+				//verifico permisos
+				await this.permisoService.checkByCodigo(this.idUsuario, "ROL_ADMIN");
+
                 if (!isValidArray(permisos, true)) {
                     reject(new ValidationError('Existen campos incompletos'));
                     return;
@@ -123,6 +146,9 @@ export default class RolService {
     async unbindPermisos(id:number, permisos:number[]) {
         return new Promise( async (resolve, reject) => {
             try {
+				//verifico permisos
+				await this.permisoService.checkByCodigo(this.idUsuario, "ROL_ADMIN");
+				
                 if (!isValidArray(permisos, true)) {
                     reject(new ValidationError('Existen campos incompletos'));
                     return;

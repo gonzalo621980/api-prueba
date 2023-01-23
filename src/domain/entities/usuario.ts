@@ -1,42 +1,24 @@
+import Rol from "./rol";
+
 export default class Usuario {
 
-    id: number;
-	nombreCompleto: string;
-	contrasena: string;
-	correoElectronico: string;
-	edad: number;
-	fechaNacimiento: Date;
-	sexo: string;
-	dni: string;
-	direccion: string;
-	pais: string;
-	telefono: string;
+    id: number = 0;
+	nombreCompleto: string = "";
+	contrasena: string = "";
+	correoElectronico: string = "";
+	edad: number = 0;
+	fechaNacimiento: Date = null;
+	sexo: string = "";
+	dni: string = "";
+	direccion: string = "";
+	pais: string = "";
+	telefono: string = "";
 
-	constructor(
-        id: number = 0,
-		nombreCompleto: string = "",
-		contrasena: string = "",
-		correoElectronico: string = "",
-		edad: number = 0,
-		fechaNacimiento: Date = null,
-		sexo: string = "",
-		dni: string = "",
-		direccion: string = "",
-		pais: string = "",
-		telefono: string = ""
-	)
+	roles: Rol[];
+
+	constructor(row: any = null)
 	{
-        this.id = id;
-		this.nombreCompleto = nombreCompleto;
-		this.contrasena = contrasena;
-		this.correoElectronico = correoElectronico;
-		this.edad = edad;
-		this.fechaNacimiento = fechaNacimiento;
-		this.sexo = sexo;
-		this.dni = dni;
-		this.direccion = direccion;
-		this.pais = pais;
-		this.telefono = telefono;
+        if (row) this.setFromObject(row);
 	}
 
 	setFromObject = (row) =>
@@ -52,6 +34,17 @@ export default class Usuario {
 		this.direccion = row.direccion ?? "";
 		this.pais = row.pais ?? "";
 		this.telefono = row.telefono ?? "";
+
+		if (row.roles) {
+			this.roles = row.roles.map(x => {
+				let item = new Rol();
+				item.setFromObject(x);
+				return item;
+			});
+		}
+		else {
+			this.roles = [];
+		}
 	}
 
 }

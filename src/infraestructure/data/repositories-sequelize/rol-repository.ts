@@ -1,9 +1,10 @@
 import IRolRepository from '../../../domain/repositories/rol-repository';
 import Rol from '../../../domain/entities/rol';
 import RolModel from './models/rol-model';
-import RolUsuarioModel from './models/rol-usuario-model';
 import RolPermisoModel from './models/rol-permiso-model';
 import { Op } from 'sequelize';
+import Permiso from '../../../domain/entities/permiso';
+import PermisoModel from './models/permiso-model';
 
 export default class RolRepositorySequelize implements IRolRepository {
 
@@ -12,17 +13,52 @@ export default class RolRepositorySequelize implements IRolRepository {
 	}
 
 	async list() {
-		const data = await RolModel.findAll();
-		const result = data.map((row) => new Rol(...row.getDataValues()));
+		const data = await RolModel.findAll(
+			{
+                include: 
+                [{
+                    model: PermisoModel,
+                    required: false,
+                    as: 'Permisos'
+                }]
+            }
+		);
+		const result = data.map((row) => {
+			let rol = new Rol(row);
+			
+			const permisos = row["Permisos"];
+			if (permisos) {
+				rol.permisos = permisos.map(permiso => new Permiso(permiso));
+			}
+
+			return rol;
+		});
 
 		return result;
 	}
 
 	async findById(id:number) {
-		const data = await RolModel.findOne({ where: { id: id } });
-		const result = (data) ? new Rol(...data.getDataValues()) : null;
+		const data = await RolModel.findOne({
+			include: 
+			[{
+				model: PermisoModel,
+				required: false,
+				as: 'Permisos'
+			}],
+			where: { id: id }
+		});
 
-		return result;
+		let rol: Rol = null;
+		if (data) {
+			rol = new Rol(data);
+			
+			const permisos = data["Permisos"];
+			if (permisos) {
+				rol.permisos = permisos.map(permiso => new Permiso(permiso));
+			}
+		}
+
+		return rol;
 	}
 
 	async add(row:Rol) {
@@ -30,7 +66,7 @@ export default class RolRepositorySequelize implements IRolRepository {
 			codigo: row.codigo,
 			nombre: row.nombre
 		});
-		const result = new Rol(...data.getDataValues());
+		const result = new Rol(data);
 
 		return result;
 	}
@@ -43,7 +79,7 @@ export default class RolRepositorySequelize implements IRolRepository {
 		{ where: { id: id } });
 
 		const data = (affectedCount[0] > 0) ? await RolModel.findOne({ where: { id: id } }) : null;
-		const result = (data) ? new Rol(...data.getDataValues()) : null;
+		const result = (data) ? new Rol(data) : null;
 
 		return result;
 	}

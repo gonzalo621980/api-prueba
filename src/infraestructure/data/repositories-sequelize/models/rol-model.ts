@@ -6,12 +6,6 @@ const sequelize = createConnection(true);
 
 class RolModel extends Model {
 
-	getDataValues = () => [
-		this.getDataValue("id"),
-		this.getDataValue("codigo"),
-		this.getDataValue("nombre")
-	];
-
 }
 
 RolModel.init(RolSchema, {

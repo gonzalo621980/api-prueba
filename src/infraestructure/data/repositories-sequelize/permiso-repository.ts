@@ -10,14 +10,14 @@ export default class PermisoRepositorySequelize implements IPermisoRepository {
 
 	async list() {
 		const data = await PermisoModel.findAll();
-		const result = data.map((row) => new Permiso(...row.getDataValues()));
+		const result = data.map(row => new Permiso(row));
 
 		return result;
 	}
 
 	async findById(id:number) {
-		const data = await PermisoModel.findOne({ where: { id: id } });
-		const result = (data) ? new Permiso(...data.getDataValues()) : null;
+		const data = await PermisoModel.findOne({ raw: true, where: { id: id } });
+		const result = (data) ? new Permiso(data) : null;
 
 		return result;
 	}

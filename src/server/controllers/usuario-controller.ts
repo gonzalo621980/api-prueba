@@ -9,38 +9,43 @@ export default class UsuarioController {
 		this.usuarioService = usuarioService;
 	}
 
-	get = async (req, res, next) => {
+	get = (req, res, next) => {
+		this.usuarioService.idUsuario = res.locals.sesion.idUsuario;
 		this.usuarioService.list()
 			.then(data => res.send(data))
 			.catch(next)
 	}
 
-	getById = async (req, res, next) => {
+	getById = (req, res, next) => {
 		const id = req.params.id;
+		this.usuarioService.idUsuario = res.locals.sesion.idUsuario;
 		this.usuarioService.findById(id)
 			.then(row => res.send(row))
 			.catch(next)
 	}
 
-	post = async (req, res, next) => {
+	post = (req, res, next) => {
 		const dataBody = {...req.body};
 		const usuario = new Usuario(); usuario.setFromObject(dataBody);
+		this.usuarioService.idUsuario = res.locals.sesion.idUsuario;
 		this.usuarioService.add(usuario)
 			.then(row => res.send(row))
 			.catch(next)
 	}
 
-	put = async (req, res, next) => {
+	put = (req, res, next) => {
 		const id = req.params.id;
 		const dataBody = {...req.body};
 		const usuario = new Usuario(); usuario.setFromObject(dataBody);
+		this.usuarioService.idUsuario = res.locals.sesion.idUsuario;
 		this.usuarioService.modify(id, usuario)
 			.then(row => res.send(row))
 			.catch(next)
 	}
 
-	delete = async (req, res, next) => {
+	delete = (req, res, next) => {
 		const id = req.params.id;
+		this.usuarioService.idUsuario = res.locals.sesion.idUsuario;
 		this.usuarioService.remove(id)
 			.then(id => res.send(id))
 			.catch(next)
@@ -51,6 +56,7 @@ export default class UsuarioController {
 		const id = req.params.id;
 		const dataBody = {...req.body};
 		const roles = dataBody.roles;
+		this.usuarioService.idUsuario = res.locals.sesion.idUsuario;
 		this.usuarioService.bindRoles(id, roles)
 		  .then(row => res.send(row))
 		  .catch(next)
@@ -60,6 +66,7 @@ export default class UsuarioController {
 		const id = req.params.id;
 		const dataBody = {...req.body};
 		const roles = dataBody.roles;
+		this.usuarioService.idUsuario = res.locals.sesion.idUsuario;
 		this.usuarioService.unbindRoles(id, roles)
 		  .then(row => res.send(row))
 		  .catch(next)

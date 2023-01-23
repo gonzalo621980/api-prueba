@@ -8,11 +8,6 @@ const sequelize = createConnection(true);
 
 class RolUsuarioModel extends Model {
 
-    getDataValues = () => [
-      this.getDataValue("idRol"),
-      this.getDataValue("idUsuario")
-    ];
-
 }
 
 
@@ -26,7 +21,13 @@ RolUsuarioModel.init(RolUsuarioSchema, {
   deletedAt: false
 });
 
-RolModel.hasMany(RolUsuarioModel, { as: 'rolUsuario', foreignKey: 'idRol' });
-UsuarioModel.hasMany(RolUsuarioModel, { as: 'rolUsuario', foreignKey: 'idUsuario' });
+RolModel.belongsToMany(UsuarioModel, { through: RolUsuarioModel, as: "Usuarios", foreignKey: "idRol" });
+UsuarioModel.belongsToMany(RolModel, { through: RolUsuarioModel, as: "Roles", foreignKey: "idUsuario" });
+
+RolUsuarioModel.hasOne(RolModel, { foreignKey: 'id' });
+RolUsuarioModel.hasOne(UsuarioModel, { foreignKey: 'id' });
+
+RolModel.hasMany(RolUsuarioModel, { foreignKey: 'idRol' });
+UsuarioModel.hasMany(RolUsuarioModel, { foreignKey: 'idUsuario' });
 
 export default RolUsuarioModel;

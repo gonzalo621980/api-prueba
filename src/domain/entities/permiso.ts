@@ -1,18 +1,12 @@
 export default class Permiso {
 
-    id: number;
-	codigo: string;
-	nombre: string;
+    id: number = 0;
+	codigo: string = "";
+	nombre: string = "";
 
-	constructor(
-        id: number = 0,
-		codigo: string = "",
-		nombre: string = ""
-	)
+	constructor(row: any = null)
 	{
-        this.id = id;
-		this.codigo = codigo;
-		this.nombre = nombre;
+        if (row) this.setFromObject(row);
 	}
 
 	setFromObject = (row) =>

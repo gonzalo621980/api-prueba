@@ -1,21 +1,21 @@
 import { Model } from 'sequelize';
 import { createConnection } from '../connections/db-connection';
-import UsuarioSchema from './usuario-schema';
+import SesionSchema from './sesion-schema';
 
 const sequelize = createConnection(true);
 
-class UsuarioModel extends Model {
+class SesionModel extends Model {
 
 }
 
-UsuarioModel.init(UsuarioSchema, {
+SesionModel.init(SesionSchema, {
   sequelize,
-  modelName: 'Usuario',
-  tableName: 'usuario',
+  modelName: 'Sesion',
+  tableName: 'sesion',
   timestamps: true,
   createdAt: false,
   updatedAt: false,
   deletedAt: false
 });
 
-export default UsuarioModel;
+export default SesionModel;

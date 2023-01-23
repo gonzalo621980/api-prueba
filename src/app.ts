@@ -13,6 +13,7 @@ const corsAllowedOrigins = config.CORS_ALLOWED_ORIGINS;
 
 const app = express();
 
+
 const corsOptions = {
   methods: "GET,PUT,POST,DELETE",
   origin: function(origin, callback) {

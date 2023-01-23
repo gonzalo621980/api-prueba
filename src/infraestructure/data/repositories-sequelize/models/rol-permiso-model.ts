@@ -8,10 +8,6 @@ const sequelize = createConnection(true);
 
 class RolPermisoModel extends Model {
 
-    getDataValues = () => [
-        this.getDataValue("idPermiso"),
-        this.getDataValue("idRol")
-    ];
 }
 
 RolPermisoModel.init(RolPermisoSchema, {
@@ -24,8 +20,13 @@ RolPermisoModel.init(RolPermisoSchema, {
   deletedAt: false
 });
 
-PermisoModel.hasMany(RolPermisoModel, { as: 'rolPermiso', foreignKey: 'idPermiso' });
-RolModel.hasMany(RolPermisoModel, { as: 'rolPermiso', foreignKey: 'idRol' });
+RolModel.belongsToMany(PermisoModel, { through: RolPermisoModel, as: "Permisos", foreignKey: "idRol" });
+PermisoModel.belongsToMany(RolModel, { through: RolPermisoModel, as: "Roles", foreignKey: "idPermiso" });
 
+RolPermisoModel.hasOne(RolModel, { foreignKey: 'id' });
+RolPermisoModel.hasOne(PermisoModel, { foreignKey: 'id' });
+
+RolModel.hasMany(RolPermisoModel, { foreignKey: 'idRol' });
+PermisoModel.hasMany(RolPermisoModel, { foreignKey: 'idPermiso' });
 
 export default RolPermisoModel;

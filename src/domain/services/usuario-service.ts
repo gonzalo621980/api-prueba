@@ -1,22 +1,31 @@
 import Usuario from '../entities/usuario';
 import IUsuarioRepository from '../repositories/usuario-repository';
+import PermisoService from './permiso-service';
 import { isValidString, isValidInteger, isValidDate, isValidArray,  } from '../../infraestructure/sdk/utils/validator';
 import ValidationError from '../../infraestructure/sdk/error/validation-error';
 import ProcessError from '../../infraestructure/sdk/error/process-error';
 import ReferenceError from '../../infraestructure/sdk/error/reference-error';
 import { EncryptPassword } from '../../infraestructure/sdk/utils/cryptograph';
+import BaseService from './base-service';
+import UnauthorizedError from '../../infraestructure/sdk/error/unauthorized-error';
 
-export default class UsuarioService {
+export default class UsuarioService extends BaseService {
 
 	usuarioRepository: IUsuarioRepository;
+	permisoService: PermisoService;
 
-	constructor(usuarioRepository: IUsuarioRepository) {
+	constructor(usuarioRepository: IUsuarioRepository, permisoService: PermisoService) {
+		super();
 		this.usuarioRepository = usuarioRepository;
+		this.permisoService = permisoService;
 	}
 
 	async list() {
 		return new Promise( async (resolve, reject) => {
 			try {
+				//verifico permisos
+				await this.permisoService.checkByCodigo(this.idUsuario, "USUARIO_LISTAR");
+
 				const usuarios = await this.usuarioRepository.list() as Usuario[];
 				usuarios.forEach(usuario => usuario.contrasena = "");
 				
@@ -31,6 +40,12 @@ export default class UsuarioService {
 	async listByFilter(usuario: Usuario) {
 		return new Promise( async (resolve, reject) => {
 			try {
+				//verifico permisos
+				await this.permisoService.checkByCodigo(this.idUsuario, "USUARIO_LISTAR");
+
+				usuario.correoElectronico = usuario.correoElectronico.toLocaleLowerCase();
+				usuario.contrasena = EncryptPassword(usuario.contrasena);
+				
 				const usuarios = await this.usuarioRepository.listByFilter(usuario) as Usuario[];
 				usuarios.forEach(usuario => usuario.contrasena = "");
 				
@@ -44,7 +59,10 @@ export default class UsuarioService {
 
 	async findById(id: number) {
 		return new Promise( async (resolve, reject) => {
-			try {			   
+			try {
+				//verifico permisos
+				await this.permisoService.checkByCodigo(this.idUsuario, "USUARIO_DETALLE");
+
 				const usuario = await this.usuarioRepository.findById(id) as Usuario;
 				if (!usuario) {
 					reject(new ReferenceError('No existe el registro'));
@@ -55,7 +73,12 @@ export default class UsuarioService {
 				resolve(usuario);
 			}
 			catch(error) {
-				reject(new ProcessError('Error procesando datos', error));
+				if (error instanceof UnauthorizedError) {
+					reject(error);
+				}
+				else {
+					reject(new ProcessError('Error procesando datos', error));
+				}
 			}
 		});
 	}
@@ -63,6 +86,9 @@ export default class UsuarioService {
 	async add(usuario: Usuario) {
 		return new Promise( async (resolve, reject) => {
 			try {
+				//verifico permisos
+				await this.permisoService.checkByCodigo(this.idUsuario, "USUARIO_CREAR");
+
 				if (
 					!isValidString(usuario.nombreCompleto, true) ||
 					!isValidString(usuario.contrasena, true) ||
@@ -83,8 +109,10 @@ export default class UsuarioService {
 				usuario.contrasena = EncryptPassword(usuario.contrasena);
 				
 				usuario.id = null;
-				const result = await this.usuarioRepository.add(usuario);
-				resolve(result);
+				usuario = await this.usuarioRepository.add(usuario);
+				usuario.contrasena = "";
+				
+				resolve(usuario);
 			}
 			catch(error) {
 				reject(new ProcessError('Error procesando datos', error));
@@ -95,6 +123,9 @@ export default class UsuarioService {
 	async modify(id: number, usuario: Usuario) {
 		return new Promise( async (resolve, reject) => {
 			try {
+				//verifico permisos
+				await this.permisoService.checkByCodigo(this.idUsuario, "USUARIO_MODIFICAR");
+
 				if (
 					!isValidString(usuario.nombreCompleto, true) ||
 					!isValidString(usuario.contrasena, true) ||
@@ -116,12 +147,14 @@ export default class UsuarioService {
 					usuario.contrasena = EncryptPassword(usuario.contrasena);
 				}
 
-				const result = await this.usuarioRepository.modify(id, usuario);
-				if (!result) {
+				usuario = await this.usuarioRepository.modify(id, usuario);
+				if (!usuario) {
 					reject(new ReferenceError('No existe el registro'));
 					return;
 				}
-				resolve(result);
+				usuario.contrasena = "";
+				
+				resolve(usuario);
 			}
 			catch(error) {
 				reject(new ProcessError('Error procesando datos', error));
@@ -132,6 +165,9 @@ export default class UsuarioService {
 	async remove(id: number) {
 		return new Promise( async (resolve, reject) => {
 			try {
+				//verifico permisos
+				await this.permisoService.checkByCodigo(this.idUsuario, "USUARIO_ELIMINAR");
+
 				const result = await this.usuarioRepository.remove(id);
 				if (!result) {
 					reject(new ReferenceError('No existe el registro'));
@@ -149,6 +185,9 @@ export default class UsuarioService {
 	async bindRoles(id:number, roles:number[]) {
         return new Promise( async (resolve, reject) => {
             try {
+				//verifico permisos
+				await this.permisoService.checkByCodigo(this.idUsuario, "USUARIO_MODIFICAR");
+
                 if (!isValidArray(roles, true)) {
                     reject(new ValidationError('Existen campos incompletos'));
                     return;
@@ -166,6 +205,9 @@ export default class UsuarioService {
     async unbindRoles(id:number, roles:number[]) {
         return new Promise( async (resolve, reject) => {
             try {
+				//verifico permisos
+				await this.permisoService.checkByCodigo(this.idUsuario, "USUARIO_MODIFICAR");
+
                 if (!isValidArray(roles, true)) {
                     reject(new ValidationError('Existen campos incompletos'));
                     return;
