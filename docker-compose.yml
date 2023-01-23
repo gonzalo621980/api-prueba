@@ -12,10 +12,12 @@ services:
       - /app/node_modules
 
     ports:
-      - "3012:3012"
+      - "3005:3005"
 
-volumes:
+    networks:
+      - mynetwork
 
 networks: 
-  default: 
+  mynetwork:
+    name: mynetwork
     driver: bridge
