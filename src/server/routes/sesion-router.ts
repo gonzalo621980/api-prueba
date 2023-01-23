@@ -6,7 +6,8 @@ const sesionController = container.resolve('sesionController');
 const router = express.Router();
 
 router
+    .put('/sesion/init', sesionController.putInit)
     .put('/sesion/login', sesionController.putLogin)
-    .put('/sesion/logout', useAuth, sesionController.putLogout)
+    .put('/sesion/logout', useAuth, sesionController.putLogout)    
 
 export default router;

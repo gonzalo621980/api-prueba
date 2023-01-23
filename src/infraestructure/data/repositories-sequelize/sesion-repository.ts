@@ -1,6 +1,14 @@
+import { createDatabase } from './connections/db-create';
 import ISesionRepository from '../../../domain/repositories/sesion-repository';
-import SesionModel from './models/sesion-model';
 import Sesion from '../../../domain/entities/sesion';
+
+import PermisoModel from './models/permiso-model';
+import RolModel from './models/rol-model';
+import UsuarioModel from './models/usuario-model';
+import RolPermisoModel from './models/rol-permiso-model';
+import RolUsuarioModel from './models/rol-usuario-model';
+import SesionModel from './models/sesion-model';
+
 
 export default class SesionRepositorySequelize implements ISesionRepository {
 
@@ -53,6 +61,19 @@ export default class SesionRepositorySequelize implements ISesionRepository {
 		const affectedCount = await SesionModel.destroy({ where: { id: id } });
 		const result = (affectedCount > 0) ? {id} : null;
 		
+		return result;
+	}
+
+	async init(rootUser: string, rootPassword: string) {
+		const result = await createDatabase(rootUser, rootPassword);
+
+		await PermisoModel.sync();
+		await RolModel.sync();
+		await UsuarioModel.sync();
+		await RolPermisoModel.sync();
+		await RolUsuarioModel.sync();
+		await SesionModel.sync();
+
 		return result;
 	}
 

@@ -1,6 +1,7 @@
 import { Model } from 'sequelize';
 import { createConnection } from '../connections/db-connection';
 import SesionSchema from './sesion-schema';
+import UsuarioModel from './usuario-model';
 
 const sequelize = createConnection(true);
 
@@ -17,5 +18,8 @@ SesionModel.init(SesionSchema, {
   updatedAt: false,
   deletedAt: false
 });
+
+SesionModel.hasOne(UsuarioModel, { foreignKey: 'idUsuario' });
+UsuarioModel.hasMany(SesionModel, { foreignKey: 'idUsuario' });
 
 export default SesionModel;

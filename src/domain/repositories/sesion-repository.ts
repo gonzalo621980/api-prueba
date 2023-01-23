@@ -12,4 +12,6 @@ export default interface ISesionRepository {
 
 	remove(id:number);
 
+	init(rootUser: string, rootPassword: string);
+
 }

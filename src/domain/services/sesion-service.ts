@@ -113,6 +113,26 @@ export default class SesionService extends BaseService {
 	}
 
 
+	async init(rootUser: string, rootPassword: string) {
+		return new Promise( async (resolve, reject) => {
+			try {
+				if (
+					!isValidString(rootUser, true) ||
+					!isValidString(rootPassword, true)
+				) {
+					reject(new ValidationError('Existen campos incompletos'));
+					return;
+				}
+
+				const result = await this.sesionRepository.init(rootUser, rootPassword);
+				resolve(result);
+			}
+			catch(error) {
+				reject(new ProcessError('Error procesando datos', error));
+			}
+		});
+	}
+
 	async login(correoElectronico: string, contrasena: string) {
 		return new Promise( async (resolve, reject) => {
 			try {

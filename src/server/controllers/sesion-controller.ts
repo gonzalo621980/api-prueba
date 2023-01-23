@@ -13,6 +13,16 @@ export default class SesionController {
 		this.sesionService = sesionService;
 	}
 
+	putInit = (req, res, next) => {
+		const dataBody = {...req.body};
+		const rootUser = dataBody.rootUser;
+		const rootPassword = dataBody.rootPassword;
+
+		this.sesionService.init(rootUser, rootPassword)
+		.then(row => res.send(row))
+		.catch(next)
+	}
+
 	putLogin = (req, res, next) => {
 		const dataBody = {...req.body};
 		const correoElectronico = dataBody.correoElectronico;
