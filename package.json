@@ -6,11 +6,12 @@
   "scripts": {
     "start": "tsc && env-cmd -f .env.develope node dist/app.js",
     "start-prod": "tsc && env-cmd -f .env.production node dist/app.js",
-    "dev": "env-cmd -f .env.develope nodemon --config nodemon.json src/app.ts"
+    "dev": "env-cmd -f .env.develope nodemon --config nodemon.json src/app.ts",
+    "swagger-autogen": "node ./swagger.js"
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/gonzalo621980/api-prueba.git"
   },
   "keywords": [],
   "author": "Gonzalo Cajaraville",
@@ -26,6 +27,8 @@
     "pg": "^8.8.0",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.28.0",
+    "swagger-autogen": "^2.22.0",
+    "swagger-ui-express": "^4.6.0",
     "validator": "^13.7.0"
   },
   "devDependencies": {

@@ -12,7 +12,6 @@ const getRoutes = () => {
     router.use('/api', RolRouter);
     router.use('/api', PermisoRouter);
     router.use('/api', SesionRouter);
-
 }
 
 getRoutes();
