@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+  api-prueba:
+    image: api-prueba:v1
+    build:
+      dockerfile: 'Dockerfile'
+    command: "npm run start-prod"
+
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+    ports:
+      - "3012:3012"
+
+volumes:
+
+networks: 
+  default: 
+    driver: bridge
