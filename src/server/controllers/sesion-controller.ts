@@ -40,10 +40,6 @@ export default class SesionController {
 	putLogout = (req, res, next) => {
 		const dataToken = res.locals.sesion;
 		const idSesion = dataToken.idSesion;
-		if (!isValidNumber(idSesion, true)) {
-			next(new ParameterError('Error de parámetros'));
-			return;
-		}
 
 		this.sesionService.logout(parseInt(idSesion))
 		.then(row => res.send(row))
