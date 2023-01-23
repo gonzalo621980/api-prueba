@@ -19,7 +19,6 @@ SesionModel.init(SesionSchema, {
   deletedAt: false
 });
 
-SesionModel.hasOne(UsuarioModel, { foreignKey: 'idUsuario' });
-UsuarioModel.hasMany(SesionModel, { foreignKey: 'idUsuario' });
+SesionModel.belongsTo(UsuarioModel, { foreignKey: 'idUsuario' });
 
 export default SesionModel;
