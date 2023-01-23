@@ -11,11 +11,17 @@ export function isValidBoolean(value) {
   );
 }
 
-export function isValidString(value, allowEmpty = true) {
+export function isValidString(value, notEmpty = false) {
   return (
     (!isNull(value) && !isNull(value.length)) &&
-    (allowEmpty || value.length > 0)
+    (!notEmpty || value.length > 0)
   );
+}
+
+export function isValidPassword(value) {
+  if (!isValidString(value, true)) return false;
+  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])([A-Za-z\d$@$!%*?&]|[^ ]){8,15}$/;
+  return regex.test(value);
 }
 
 export function isValidNumber(value, isPositive = false) {
@@ -39,15 +45,15 @@ export function isValidFloat(value, isPositive = false) {
   );
 }
 
-export function isValidDate(value, NotNull = false) {
+export function isValidDate(value, notNull = false) {
   let isValidDate = Date.parse(value);
-  return (!NotNull && isNull(value) || !isNull(value) && !isNaN(isValidDate));
+  return (!notNull && isNull(value) || !isNull(value) && !isNaN(isValidDate));
 }
 
-export function isValidArray(value, allowEmpty = true) {
+export function isValidArray(value, notEmpty = false) {
   return (
     (!isNull(value) && Array.isArray(value)) &&
-    (allowEmpty || value.length > 0)
+    (!notEmpty || value.length > 0)
   );
 }
 
@@ -56,7 +62,7 @@ export function isValidEmail(value) {
 }
 
 export function isValidObject(value) {
-  return (!isNull(value) && (typeof value === 'function' || typeof value === 'object'));
+  return (!isNull(value) && Object.entries(value).length !== 0 && (typeof value === 'function' || typeof value === 'object'));
 }
 
 export function isOriginAllowed(origin, allowedOrigin) {

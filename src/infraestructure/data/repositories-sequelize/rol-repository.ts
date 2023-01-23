@@ -85,6 +85,7 @@ export default class RolRepositorySequelize implements IRolRepository {
 	}
 
 	async remove(id:number) {
+		await RolPermisoModel.destroy({ where: { idRol: id } });
 		const affectedCount = await RolModel.destroy({ where: { id: id } });
 		const result = (affectedCount > 0) ? {id} : null;
 		

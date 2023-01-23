@@ -1,7 +1,7 @@
 import Usuario from '../entities/usuario';
 import IUsuarioRepository from '../repositories/usuario-repository';
 import PermisoService from './permiso-service';
-import { isValidString, isValidInteger, isValidDate, isValidArray,  } from '../../infraestructure/sdk/utils/validator';
+import { isValidString, isValidInteger, isValidDate, isValidArray, isValidEmail, isValidPassword,  } from '../../infraestructure/sdk/utils/validator';
 import ValidationError from '../../infraestructure/sdk/error/validation-error';
 import ProcessError from '../../infraestructure/sdk/error/process-error';
 import ReferenceError from '../../infraestructure/sdk/error/reference-error';
@@ -32,27 +32,12 @@ export default class UsuarioService extends BaseService {
 				resolve(usuarios);
 			}
 			catch(error) {
-				reject(new ProcessError('Error procesando datos', error));
-			}
-		});
-	}
-
-	async listByFilter(usuario: Usuario) {
-		return new Promise( async (resolve, reject) => {
-			try {
-				//verifico permisos
-				await this.permisoService.checkByCodigo(this.idUsuario, "USUARIO_LISTAR");
-
-				usuario.correoElectronico = usuario.correoElectronico.toLocaleLowerCase();
-				usuario.contrasena = EncryptPassword(usuario.contrasena);
-				
-				const usuarios = await this.usuarioRepository.listByFilter(usuario) as Usuario[];
-				usuarios.forEach(usuario => usuario.contrasena = "");
-				
-				resolve(usuarios);
-			}
-			catch(error) {
-				reject(new ProcessError('Error procesando datos', error));
+				if (error instanceof UnauthorizedError) {
+					reject(error);
+				}
+				else {
+					reject(new ProcessError('Error procesando datos', error));
+				}
 			}
 		});
 	}
@@ -89,24 +74,32 @@ export default class UsuarioService extends BaseService {
 				//verifico permisos
 				await this.permisoService.checkByCodigo(this.idUsuario, "USUARIO_CREAR");
 
-				if (
-					!isValidString(usuario.nombreCompleto, true) ||
-					!isValidString(usuario.contrasena, true) ||
-					!isValidString(usuario.correoElectronico, true) ||
-					!isValidInteger(usuario.edad, true) ||
-					!isValidDate(usuario.fechaNacimiento, true) ||
-					!isValidString(usuario.sexo, true) ||
-					!isValidString(usuario.dni, true) ||
-					!isValidString(usuario.direccion, true) ||
-					!isValidString(usuario.pais, true) ||
-					!isValidString(usuario.telefono, true)
-				) {
-					reject(new ValidationError('Existen campos incompletos'));
+				const menssge = this.validate(usuario);
+				if (menssge.length > 0) {
+					reject(new ValidationError(menssge));
 					return;
 				}
 
 				usuario.correoElectronico = usuario.correoElectronico.toLocaleLowerCase();
 				usuario.contrasena = EncryptPassword(usuario.contrasena);
+
+				//validacion de correo electronico existente
+				let usuarioValidate = new Usuario();
+				usuarioValidate.correoElectronico = usuario.correoElectronico;
+				let usuarios = await this.listByFilter(usuarioValidate) as Usuario[];
+				if (usuarios.length > 0) {
+					reject(new ValidationError('El correo electrónico ya fue utilizado, debe ingresar uno diferente'));
+					return;
+				}
+
+				//validacion de DNI existente
+				usuarioValidate.correoElectronico = "";
+				usuarioValidate.dni = usuario.dni;
+				usuarios = await this.listByFilter(usuarioValidate) as Usuario[];
+				if (usuarios.length > 0) {
+					reject(new ValidationError('El DNI ya fue utilizado, debe ingresar uno diferente'));
+					return;
+				}
 				
 				usuario.id = null;
 				usuario = await this.usuarioRepository.add(usuario);
@@ -115,7 +108,12 @@ export default class UsuarioService extends BaseService {
 				resolve(usuario);
 			}
 			catch(error) {
-				reject(new ProcessError('Error procesando datos', error));
+				if (error instanceof UnauthorizedError) {
+					reject(error);
+				}
+				else {
+					reject(new ProcessError('Error procesando datos', error));
+				}
 			}
 		});
 	}
@@ -126,25 +124,33 @@ export default class UsuarioService extends BaseService {
 				//verifico permisos
 				await this.permisoService.checkByCodigo(this.idUsuario, "USUARIO_MODIFICAR");
 
-				if (
-					!isValidString(usuario.nombreCompleto, true) ||
-					!isValidString(usuario.contrasena, true) ||
-					!isValidString(usuario.correoElectronico, true) ||
-					!isValidInteger(usuario.edad, true) ||
-					!isValidDate(usuario.fechaNacimiento, true) ||
-					!isValidString(usuario.sexo, true) ||
-					!isValidString(usuario.dni, true) ||
-					!isValidString(usuario.direccion, true) ||
-					!isValidString(usuario.pais, true) ||
-					!isValidString(usuario.telefono, true)
-				) {
-					reject(new ValidationError('Existen campos incompletos'));
+				const menssge = this.validate(usuario);
+				if (menssge.length > 0) {
+					reject(new ValidationError(menssge));
 					return;
 				}
 
 				usuario.correoElectronico = usuario.correoElectronico.toLocaleLowerCase();
 				if (usuario.contrasena.length > 0) {
 					usuario.contrasena = EncryptPassword(usuario.contrasena);
+				}
+
+				//validacion de correo electronico existente
+				let usuarioValidate = new Usuario();
+				usuarioValidate.correoElectronico = usuario.correoElectronico;
+				let usuarios = (await this.listByFilter(usuarioValidate) as Usuario[]).filter(f => f.id !== id);
+				if (usuarios.length > 0) {
+					reject(new ValidationError('El correo electrónico ya fue utilizado, debe ingresar uno diferente'));
+					return;
+				}
+
+				//validacion de DNI existente
+				usuarioValidate.correoElectronico = "";
+				usuarioValidate.dni = usuario.dni;
+				usuarios = (await this.listByFilter(usuarioValidate) as Usuario[]).filter(f => f.id !== id);
+				if (usuarios.length > 0) {
+					reject(new ValidationError('El DNI ya fue utilizado, debe ingresar uno diferente'));
+					return;
 				}
 
 				usuario = await this.usuarioRepository.modify(id, usuario);
@@ -157,7 +163,12 @@ export default class UsuarioService extends BaseService {
 				resolve(usuario);
 			}
 			catch(error) {
-				reject(new ProcessError('Error procesando datos', error));
+				if (error instanceof UnauthorizedError) {
+					reject(error);
+				}
+				else {
+					reject(new ProcessError('Error procesando datos', error));
+				}
 			}
 		});
 	}
@@ -176,11 +187,35 @@ export default class UsuarioService extends BaseService {
 				resolve(result);
 			}
 			catch(error) {
-				reject(new ProcessError('Error procesando datos', error));
+				if (error instanceof UnauthorizedError) {
+					reject(error);
+				}
+				else {
+					reject(new ProcessError('Error procesando datos', error));
+				}
 			}
 		});
 	}
 
+
+	async listByFilter(usuario: Usuario) {
+		return new Promise( async (resolve, reject) => {
+			try {
+				usuario.correoElectronico = usuario.correoElectronico.toLocaleLowerCase();
+				if (usuario.contrasena.length > 0) {
+					usuario.contrasena = EncryptPassword(usuario.contrasena);
+				}
+				
+				const usuarios = await this.usuarioRepository.listByFilter(usuario) as Usuario[];
+				usuarios.forEach(usuario => usuario.contrasena = "");
+				
+				resolve(usuarios);
+			}
+			catch(error) {
+				reject(new ProcessError('Error procesando datos', error));
+			}
+		});
+	}
 
 	async bindRoles(id:number, roles:number[]) {
         return new Promise( async (resolve, reject) => {
@@ -192,12 +227,27 @@ export default class UsuarioService extends BaseService {
                     reject(new ValidationError('Existen campos incompletos'));
                     return;
                 }
+				if (roles.length > 1) {
+					reject(new ValidationError('No se puede asignar más de un rol'));
+                    return;
+				}
+
+				const usuario = await this.usuarioRepository.findById(id) as Usuario;
+				if (usuario.roles.length > 0 || roles.length > 1) {
+					reject(new ValidationError('El usuario ya tiene un rol asignado'));
+                    return;
+				}
 
                 const result = await this.usuarioRepository.bindRoles(id, roles);
                 resolve(result);
             }
             catch(error) {
-                reject(new ProcessError('Error procesando datos', error));
+				if (error instanceof UnauthorizedError) {
+					reject(error);
+				}
+				else {
+					reject(new ProcessError('Error procesando datos', error));
+				}
             }
         });
     }
@@ -217,9 +267,51 @@ export default class UsuarioService extends BaseService {
                 resolve(result);
             }
             catch(error) {
-                reject(new ProcessError('Error procesando datos', error));
+				if (error instanceof UnauthorizedError) {
+					reject(error);
+				}
+				else {
+					reject(new ProcessError('Error procesando datos', error));
+				}
             }
         });
     }
+
+
+	//other functions
+	validate(usuario: Usuario) {
+		if (!isValidString(usuario.nombreCompleto, true)) {
+			return 'Debe ingresar el nombre completo';
+		}
+		if (!(usuario.contrasena.length === 0 || isValidPassword(usuario.contrasena))) {
+			return 'Debe ingresar una contraseña correcto (mínimo 8 carácteres, máximo 15, 1 letra mayúscula, 1 minúscula, 1 dígito, 1 carácter especial, sin espacios en blanco)';
+		}
+		if (!isValidEmail(usuario.correoElectronico)) {
+			return 'Debe ingresar un correo electrónico correcto';
+		}
+		if (!isValidInteger(usuario.edad, true)) {
+			return 'Debe ingresar la edad';
+		}
+		if (!isValidDate(usuario.fechaNacimiento, true)) {
+			return 'Debe ingresar una fecha de nacimiento correcta';
+		}
+		if (!(usuario.sexo === "M" || usuario.sexo === "F")) {
+			return 'Debe ingresar el sexo (M o F)';
+		}
+		if (!isValidString(usuario.dni, true)) {
+			return 'Debe ingresar el DNI';
+		}
+		if (!isValidString(usuario.direccion, true)) {
+			return 'Debe ingresar la dirección';
+		}
+		if (!isValidString(usuario.pais, true)) {
+			return 'Debe ingresar el país';
+		}
+		if (!isValidString(usuario.telefono, true)) {
+			return 'Debe ingresar el teléfono';
+		}
+
+		return "";
+	}
 
 }

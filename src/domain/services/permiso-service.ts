@@ -27,7 +27,12 @@ export default class PermisoService extends BaseService {
 				resolve(result);
 			}
 			catch(error) {
-				reject(new ProcessError('Error procesando datos', error));
+				if (error instanceof UnauthorizedError) {
+					reject(error);
+				}
+				else {
+					reject(new ProcessError('Error procesando datos', error));
+				}
 			}
 		});
 	}
@@ -46,7 +51,12 @@ export default class PermisoService extends BaseService {
 				resolve(result);
 			}
 			catch(error) {
-				reject(new ProcessError('Error procesando datos', error));
+				if (error instanceof UnauthorizedError) {
+					reject(error);
+				}
+				else {
+					reject(new ProcessError('Error procesando datos', error));
+				}
 			}
 		});
 	}

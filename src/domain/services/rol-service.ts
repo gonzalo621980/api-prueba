@@ -6,6 +6,7 @@ import ValidationError from '../../infraestructure/sdk/error/validation-error';
 import ProcessError from '../../infraestructure/sdk/error/process-error';
 import ReferenceError from '../../infraestructure/sdk/error/reference-error';
 import BaseService from './base-service';
+import UnauthorizedError from '../../infraestructure/sdk/error/unauthorized-error';
 
 export default class RolService extends BaseService {
 
@@ -28,7 +29,12 @@ export default class RolService extends BaseService {
 				resolve(result);
 			}
 			catch(error) {
-				reject(new ProcessError('Error procesando datos', error));
+				if (error instanceof UnauthorizedError) {
+					reject(error);
+				}
+				else {
+					reject(new ProcessError('Error procesando datos', error));
+				}
 			}
 		});
 	}
@@ -47,7 +53,12 @@ export default class RolService extends BaseService {
 				resolve(result);
 			}
 			catch(error) {
-				reject(new ProcessError('Error procesando datos', error));
+				if (error instanceof UnauthorizedError) {
+					reject(error);
+				}
+				else {
+					reject(new ProcessError('Error procesando datos', error));
+				}
 			}
 		});
 	}
@@ -71,7 +82,12 @@ export default class RolService extends BaseService {
 				resolve(result);
 			}
 			catch(error) {
-				reject(new ProcessError('Error procesando datos', error));
+				if (error instanceof UnauthorizedError) {
+					reject(error);
+				}
+				else {
+					reject(new ProcessError('Error procesando datos', error));
+				}
 			}
 		});
 	}
@@ -98,7 +114,12 @@ export default class RolService extends BaseService {
 				resolve(result);
 			}
 			catch(error) {
-				reject(new ProcessError('Error procesando datos', error));
+				if (error instanceof UnauthorizedError) {
+					reject(error);
+				}
+				else {
+					reject(new ProcessError('Error procesando datos', error));
+				}
 			}
 		});
 	}
@@ -117,7 +138,12 @@ export default class RolService extends BaseService {
 				resolve(result);
 			}
 			catch(error) {
-				reject(new ProcessError('Error procesando datos', error));
+				if (error instanceof UnauthorizedError) {
+					reject(error);
+				}
+				else {
+					reject(new ProcessError('Error procesando datos', error));
+				}
 			}
 		});
 	}
@@ -138,7 +164,12 @@ export default class RolService extends BaseService {
                 resolve(result);
             }
             catch(error) {
-                reject(new ProcessError('Error procesando datos', error));
+				if (error instanceof UnauthorizedError) {
+					reject(error);
+				}
+				else {
+					reject(new ProcessError('Error procesando datos', error));
+				}
             }
         });
     }
@@ -158,7 +189,12 @@ export default class RolService extends BaseService {
                 resolve(result);
             }
             catch(error) {
-                reject(new ProcessError('Error procesando datos', error));
+				if (error instanceof UnauthorizedError) {
+					reject(error);
+				}
+				else {
+					reject(new ProcessError('Error procesando datos', error));
+				}
             }
         });
     }

@@ -154,6 +154,7 @@ export default class UsuarioRepositorySequelize implements IUsuarioRepository {
 	}
 
 	async remove(id:number) {
+		await RolUsuarioModel.destroy({ where: { idUsuario: id } });
 		const affectedCount = await UsuarioModel.destroy({ where: { id: id } });
 		const result = (affectedCount > 0) ? {id} : null;
 		
