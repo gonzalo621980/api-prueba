@@ -6,4 +6,6 @@ export default interface IPermisoRepository {
 
 	findById(id:number);
 
+	add(row:Permiso);
+
 }

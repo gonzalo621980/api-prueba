@@ -22,4 +22,14 @@ export default class PermisoRepositorySequelize implements IPermisoRepository {
 		return result;
 	}
 
+	async add(row:Permiso) {
+		const data = await PermisoModel.create({
+			codigo: row.codigo,
+			nombre: row.nombre
+		});
+		const result = new Permiso(data);
+
+		return result;
+	}
+
 }
