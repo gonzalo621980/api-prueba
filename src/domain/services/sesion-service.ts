@@ -128,7 +128,12 @@ export default class SesionService extends BaseService {
 				resolve(result);
 			}
 			catch(error) {
-				reject(new ProcessError('Error procesando datos', error));
+				if (error instanceof ProcessError) {
+					reject(error);
+				}
+				else {
+					reject(new ProcessError('Error procesando datos', error));
+				}
 			}
 		});
 	}

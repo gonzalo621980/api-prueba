@@ -82,7 +82,7 @@ const executeSQL = (rootUser: string, rootPassword: string, sql: string) => {
       client.query(sql, (err, res) => {
         client.end();
         if (err) {
-          reject(new ProcessError('Error procesando datos', err));
+          reject(new ProcessError(`Error de ejecución: ${err}`, err));
         }
         else {
           resolve({ result: res });
@@ -90,8 +90,8 @@ const executeSQL = (rootUser: string, rootPassword: string, sql: string) => {
       });
 
     }
-    catch(error) {
-      reject(new ProcessError('Error procesando datos', error));
+    catch(err) {
+      reject(new ProcessError(`Error de ejecución: ${err}`, err));
     }
   });
 }

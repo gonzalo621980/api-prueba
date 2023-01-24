@@ -11,132 +11,1735 @@
     "http"
   ],
   "paths": {
-    "/doc": {
-      "get": {
-        "description": "",
-        "parameters": [],
-        "responses": {}
-      }
-    },
     "/api/usuario": {
       "get": {
-        "description": "",
-        "parameters": [],
-        "responses": {}
+        "description": "Lista usuarios con sus roles y permisos",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token autenticación",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Bearer <token>"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "json",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 1
+                  },
+                  "nombreCompleto": {
+                    "type": "string",
+                    "example": "admin"
+                  },
+                  "contrasena": {
+                    "type": "string",
+                    "example": ""
+                  },
+                  "correoElectronico": {
+                    "type": "string",
+                    "example": "admin@prueba.com"
+                  },
+                  "edad": {
+                    "type": "number",
+                    "example": 23
+                  },
+                  "fechaNacimiento": {
+                    "type": "string",
+                    "example": "2000-01-23T00:00:00.000Z"
+                  },
+                  "sexo": {
+                    "type": "string",
+                    "example": "M"
+                  },
+                  "dni": {
+                    "type": "string",
+                    "example": "123456789"
+                  },
+                  "direccion": {
+                    "type": "string",
+                    "example": "-"
+                  },
+                  "pais": {
+                    "type": "string",
+                    "example": "-"
+                  },
+                  "telefono": {
+                    "type": "string",
+                    "example": "-"
+                  },
+                  "roles": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number",
+                          "example": 1
+                        },
+                        "codigo": {
+                          "type": "string",
+                          "example": "TEST"
+                        },
+                        "nombre": {
+                          "type": "string",
+                          "example": "Tester"
+                        },
+                        "permisos": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "number",
+                                "example": 5
+                              },
+                              "codigo": {
+                                "type": "string",
+                                "example": "USUARIO_DETALLE"
+                              },
+                              "nombre": {
+                                "type": "string",
+                                "example": "Ver detalle de usuario"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "json",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 500
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error..."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
       },
       "post": {
-        "description": "",
-        "parameters": [],
-        "responses": {}
+        "description": "Crea un nuevo usuario",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token autenticación",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Bearer <token>"
+            }
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Detalle de un usuario",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nombreCompleto": {
+                  "type": "string",
+                  "example": "admin"
+                },
+                "contrasena": {
+                  "type": "string",
+                  "example": ""
+                },
+                "correoElectronico": {
+                  "type": "string",
+                  "example": "admin@prueba.com"
+                },
+                "edad": {
+                  "type": "number",
+                  "example": 23
+                },
+                "fechaNacimiento": {
+                  "type": "string",
+                  "example": "2000-01-23T00:00:00.000Z"
+                },
+                "sexo": {
+                  "type": "string",
+                  "example": "M"
+                },
+                "dni": {
+                  "type": "string",
+                  "example": "123456789"
+                },
+                "direccion": {
+                  "type": "string",
+                  "example": "-"
+                },
+                "pais": {
+                  "type": "string",
+                  "example": "-"
+                },
+                "telefono": {
+                  "type": "string",
+                  "example": "-"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "json",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "nombreCompleto": {
+                  "type": "string",
+                  "example": "admin"
+                },
+                "contrasena": {
+                  "type": "string",
+                  "example": ""
+                },
+                "correoElectronico": {
+                  "type": "string",
+                  "example": "admin@prueba.com"
+                },
+                "edad": {
+                  "type": "number",
+                  "example": 23
+                },
+                "fechaNacimiento": {
+                  "type": "string",
+                  "example": "2000-01-23T00:00:00.000Z"
+                },
+                "sexo": {
+                  "type": "string",
+                  "example": "M"
+                },
+                "dni": {
+                  "type": "string",
+                  "example": "123456789"
+                },
+                "direccion": {
+                  "type": "string",
+                  "example": "-"
+                },
+                "pais": {
+                  "type": "string",
+                  "example": "-"
+                },
+                "telefono": {
+                  "type": "string",
+                  "example": "-"
+                },
+                "roles": {
+                  "type": "array",
+                  "example": [],
+                  "items": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "json",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 500
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error..."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
       }
     },
     "/api/usuario/{id}": {
       "get": {
-        "description": "",
-        "parameters": [],
-        "responses": {}
+        "description": "Muestra detalle de un usuario con sus roles y permisos",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id de usuario",
+            "schema": {
+              "type": "string",
+              "example": "1"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token autenticación",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Bearer <token>"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "json",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "nombreCompleto": {
+                  "type": "string",
+                  "example": "admin"
+                },
+                "contrasena": {
+                  "type": "string",
+                  "example": ""
+                },
+                "correoElectronico": {
+                  "type": "string",
+                  "example": "admin@prueba.com"
+                },
+                "edad": {
+                  "type": "number",
+                  "example": 23
+                },
+                "fechaNacimiento": {
+                  "type": "string",
+                  "example": "2000-01-23T00:00:00.000Z"
+                },
+                "sexo": {
+                  "type": "string",
+                  "example": "M"
+                },
+                "dni": {
+                  "type": "string",
+                  "example": "123456789"
+                },
+                "direccion": {
+                  "type": "string",
+                  "example": "-"
+                },
+                "pais": {
+                  "type": "string",
+                  "example": "-"
+                },
+                "telefono": {
+                  "type": "string",
+                  "example": "-"
+                },
+                "roles": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "codigo": {
+                        "type": "string",
+                        "example": "TEST"
+                      },
+                      "nombre": {
+                        "type": "string",
+                        "example": "Tester"
+                      },
+                      "permisos": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "number",
+                              "example": 5
+                            },
+                            "codigo": {
+                              "type": "string",
+                              "example": "USUARIO_DETALLE"
+                            },
+                            "nombre": {
+                              "type": "string",
+                              "example": "Ver detalle de usuario"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "json",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 500
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error..."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
       },
       "put": {
-        "description": "",
-        "parameters": [],
-        "responses": {}
+        "description": "Actualiza un usuario",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id de usuario",
+            "schema": {
+              "type": "string",
+              "example": "1"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token autenticación",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Bearer <token>"
+            }
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Detalle de un usuario",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nombreCompleto": {
+                  "type": "string",
+                  "example": "admin"
+                },
+                "contrasena": {
+                  "type": "string",
+                  "example": ""
+                },
+                "correoElectronico": {
+                  "type": "string",
+                  "example": "admin@prueba.com"
+                },
+                "edad": {
+                  "type": "number",
+                  "example": 23
+                },
+                "fechaNacimiento": {
+                  "type": "string",
+                  "example": "2000-01-23T00:00:00.000Z"
+                },
+                "sexo": {
+                  "type": "string",
+                  "example": "M"
+                },
+                "dni": {
+                  "type": "string",
+                  "example": "123456789"
+                },
+                "direccion": {
+                  "type": "string",
+                  "example": "-"
+                },
+                "pais": {
+                  "type": "string",
+                  "example": "-"
+                },
+                "telefono": {
+                  "type": "string",
+                  "example": "-"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "json",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "nombreCompleto": {
+                  "type": "string",
+                  "example": "admin"
+                },
+                "contrasena": {
+                  "type": "string",
+                  "example": ""
+                },
+                "correoElectronico": {
+                  "type": "string",
+                  "example": "admin@prueba.com"
+                },
+                "edad": {
+                  "type": "number",
+                  "example": 23
+                },
+                "fechaNacimiento": {
+                  "type": "string",
+                  "example": "2000-01-23T00:00:00.000Z"
+                },
+                "sexo": {
+                  "type": "string",
+                  "example": "M"
+                },
+                "dni": {
+                  "type": "string",
+                  "example": "123456789"
+                },
+                "direccion": {
+                  "type": "string",
+                  "example": "-"
+                },
+                "pais": {
+                  "type": "string",
+                  "example": "-"
+                },
+                "telefono": {
+                  "type": "string",
+                  "example": "-"
+                },
+                "roles": {
+                  "type": "array",
+                  "example": [],
+                  "items": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "json",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 500
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error..."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
       },
       "delete": {
-        "description": "",
-        "parameters": [],
-        "responses": {}
+        "description": "Borra un usuario",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id de usuario",
+            "schema": {
+              "type": "string",
+              "example": "1"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token autenticación",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Bearer <token>"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "json",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "json",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 500
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error..."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
       }
     },
     "/api/usuario/{id}/roles/bind": {
       "put": {
-        "description": "",
-        "parameters": [],
-        "responses": {}
+        "description": "Agregar roles a un usuario",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id de usuario",
+            "schema": {
+              "type": "string",
+              "example": "1"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token autenticación",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Bearer <token>"
+            }
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Ids de roles",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "roles": {
+                  "type": "array",
+                  "example": [
+                    1
+                  ],
+                  "items": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "json",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "json",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 500
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error..."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
       }
     },
     "/api/usuario/{id}/roles/unbind": {
       "put": {
-        "description": "",
-        "parameters": [],
-        "responses": {}
+        "description": "Quitar roles a un usuario",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id de usuario",
+            "schema": {
+              "type": "string",
+              "example": "1"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token autenticación",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Bearer <token>"
+            }
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Ids de roles",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "roles": {
+                  "type": "array",
+                  "example": [
+                    1
+                  ],
+                  "items": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "json",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "json",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 500
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error..."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
       }
     },
     "/api/rol": {
       "get": {
-        "description": "",
-        "parameters": [],
-        "responses": {}
+        "description": "Lista roles con sus permisos",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token autenticación",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Bearer <token>"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "json",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 1
+                  },
+                  "codigo": {
+                    "type": "string",
+                    "example": "ADMIN"
+                  },
+                  "nombre": {
+                    "type": "string",
+                    "example": "Administrador"
+                  },
+                  "permisos": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number",
+                          "example": 1
+                        },
+                        "codigo": {
+                          "type": "string",
+                          "example": "USUARIO_CREAR"
+                        },
+                        "nombre": {
+                          "type": "string",
+                          "example": "Crear usuario"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "json",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 500
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error..."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
       },
       "post": {
-        "description": "",
-        "parameters": [],
-        "responses": {}
+        "description": "Crea un nuevo rol",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token autenticación",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Bearer <token>"
+            }
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Detalle de un rol",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "codigo": {
+                  "type": "string",
+                  "example": "ADMIN"
+                },
+                "nombre": {
+                  "type": "string",
+                  "example": "Administrador"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "json",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "codigo": {
+                  "type": "string",
+                  "example": "ADMIN"
+                },
+                "nombre": {
+                  "type": "string",
+                  "example": "Administrador"
+                },
+                "permisos": {
+                  "type": "array",
+                  "example": [],
+                  "items": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "json",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 500
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error..."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
       }
     },
     "/api/rol/{id}": {
       "get": {
-        "description": "",
-        "parameters": [],
-        "responses": {}
+        "description": "Muestra detalle de un rol con sus permisos",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id de rol",
+            "schema": {
+              "type": "string",
+              "example": "1"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token autenticación",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Bearer <token>"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "json",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "codigo": {
+                  "type": "string",
+                  "example": "ADMIN"
+                },
+                "nombre": {
+                  "type": "string",
+                  "example": "Administrador"
+                },
+                "permisos": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "codigo": {
+                        "type": "string",
+                        "example": "USUARIO_CREAR"
+                      },
+                      "nombre": {
+                        "type": "string",
+                        "example": "Crear usuario"
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "json",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 500
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error..."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
       },
       "put": {
-        "description": "",
-        "parameters": [],
-        "responses": {}
+        "description": "Actualiza un rol",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id de rol",
+            "schema": {
+              "type": "string",
+              "example": "1"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token autenticación",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Bearer <token>"
+            }
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Detalle de un rol",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "codigo": {
+                  "type": "string",
+                  "example": "ADMIN"
+                },
+                "nombre": {
+                  "type": "string",
+                  "example": "Administrador"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "json",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "codigo": {
+                  "type": "string",
+                  "example": "ADMIN"
+                },
+                "nombre": {
+                  "type": "string",
+                  "example": "Administrador"
+                },
+                "permisos": {
+                  "type": "array",
+                  "example": [],
+                  "items": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "json",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 500
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error..."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
       },
       "delete": {
-        "description": "",
-        "parameters": [],
-        "responses": {}
+        "description": "Borra un rol",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id de rol",
+            "schema": {
+              "type": "string",
+              "example": "1"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token autenticación",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Bearer <token>"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "json",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "json",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 500
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error..."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
       }
     },
     "/api/rol/{id}/permisos/bind": {
       "put": {
-        "description": "",
-        "parameters": [],
-        "responses": {}
+        "description": "Agregar permisos a un rol",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id de rol",
+            "schema": {
+              "type": "string",
+              "example": "1"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token autenticación",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Bearer <token>"
+            }
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Ids de permisos",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "permisos": {
+                  "type": "array",
+                  "example": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5
+                  ],
+                  "items": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "json",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "json",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 500
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error..."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
       }
     },
     "/api/rol/{id}/permisos/unbind": {
       "put": {
-        "description": "",
-        "parameters": [],
-        "responses": {}
+        "description": "Quitar permisos a un rol",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id de rol",
+            "schema": {
+              "type": "string",
+              "example": "1"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token autenticación",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Bearer <token>"
+            }
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Ids de permisos",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "permisos": {
+                  "type": "array",
+                  "example": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5
+                  ],
+                  "items": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "json",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "json",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 500
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error..."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
       }
     },
     "/api/permiso": {
       "get": {
-        "description": "",
-        "parameters": [],
-        "responses": {}
+        "description": "Lista permisos",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token autenticación",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Bearer <token>"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "json",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 1
+                  },
+                  "codigo": {
+                    "type": "string",
+                    "example": "USUARIO_CREAR"
+                  },
+                  "nombre": {
+                    "type": "string",
+                    "example": "Crear usuario"
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "json",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 500
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error..."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
       }
     },
     "/api/permiso/{id}": {
       "get": {
-        "description": "",
-        "parameters": [],
-        "responses": {}
+        "description": "Muestra detalle de un permiso",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "id de Permiso",
+            "schema": {
+              "type": "string",
+              "example": "1"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token autenticación",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Bearer <token>"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "json",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "codigo": {
+                  "type": "string",
+                  "example": "USUARIO_CREAR"
+                },
+                "nombre": {
+                  "type": "string",
+                  "example": "Crear usuario"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "json",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 500
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error..."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
       }
     },
     "/api/sesion/init": {
       "put": {
-        "description": "",
-        "parameters": [],
-        "responses": {}
+        "description": "Crea la base de datos desde cero con toda su estructura",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Credenciales del usuario administrador",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "rootUser": {
+                  "type": "string",
+                  "example": "admin"
+                },
+                "rootPassword": {
+                  "type": "string",
+                  "example": "1234"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "json",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Base de datos creada exitosamente"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "json",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 500
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error..."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
       }
     },
     "/api/sesion/login": {
       "put": {
-        "description": "",
-        "parameters": [],
-        "responses": {}
+        "description": "Inicia sesión en el sistema",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Credenciales del usuario de aplicación",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "correoElectronico": {
+                  "type": "string",
+                  "example": "admin@prueba.com"
+                },
+                "contrasena": {
+                  "type": "string",
+                  "example": "Prueb@2023"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "token",
+            "type": "string",
+            "schema": {
+              "type": "string",
+              "example": "<token>",
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "json",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 500
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error..."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
       }
     },
     "/api/sesion/logout": {
       "put": {
-        "description": "",
-        "parameters": [],
-        "responses": {}
+        "description": "Cierra sesión en el sistema",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token autenticación",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Bearer <token>"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "json",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 2
+                },
+                "fechaInicio": {
+                  "type": "string",
+                  "example": "2023-01-24T04:11:14.233Z"
+                },
+                "fechaCierre": {
+                  "type": "string",
+                  "example": "2023-01-24T04:11:23.526Z"
+                },
+                "idUsuario": {
+                  "type": "number",
+                  "example": 1
+                },
+                "activa": {
+                  "type": "boolean",
+                  "example": false
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "json",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "number",
+                  "example": 500
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Error..."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
       }
     }
   }
